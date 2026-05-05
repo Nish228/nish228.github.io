@@ -45,7 +45,7 @@
 
     <p>I've been reading about AI safety for a while (instrumental convergence, specification gaming, deceptive alignment) and I was curious about what happens when an agent has to make decisions over many steps, with real consequences accumulating over time, inside an environment it has to navigate. Taxes, quotas, institutional trust, oversight with blind spots: these are structures that exist in real organizations, and humans have been finding creative ways around them forever. I wanted to know whether an LLM agent, placed in a structurally similar situation, would find the same shortcuts.</p>
 
-    <p>So I built an environment (a small game world with clear rules, clear incentives to bend them, and an oversight mechanism with gaps) and let an agent run inside it for hundreds of steps. I logged everything: every decision, every chain-of-thought, every outcome. The approach of using chain-of-thought scratchpads as a window into agent reasoning was informed by Kinniment et al. <a href="#ref-1" class="cite">[1]</a>, who used similar logging to evaluate scheming behaviors in LLM agents. I don't have a safety research background. What follows is what I found.</p>
+    <p>So I built an environment (a small game world with clear rules, clear incentives to bend them, and an oversight mechanism with gaps) and let an agent run inside it for hundreds of steps. I logged everything: every decision, every chain-of-thought, every outcome. The approach of using chain-of-thought scratchpads as a window into agent reasoning was informed by Meinke et al. <a href="#ref-1" class="cite">[1]</a>, who used similar logging to evaluate scheming behaviors in LLM agents. I don't have a safety research background. What follows is what I found.</p>
 
     <hr>
 
@@ -94,7 +94,7 @@
 
     <h3>The Model</h3>
 
-    <p>The agent is powered by Seed-OSS-36B-Instruct <a href="#ref-7" class="cite">[7]</a>, an open-source reasoning model released by ByteDance's Seed team under the Apache 2.0 license. It's a 36-billion parameter dense transformer with 64 layers and a 512K native context window, trained on 12 trillion tokens. It was designed with agentic tasks in mind (tool use, multi-step problem solving, autonomous operation) and has a native thinking mode, which made it a natural fit for this kind of experiment.</p>
+    <p>The agent is powered by Seed-OSS-36B-Instruct <a href="#ref-6" class="cite">[6]</a>, an open-source reasoning model released by ByteDance's Seed team under the Apache 2.0 license. It's a 36-billion parameter dense transformer with 64 layers and a 512K native context window, trained on 12 trillion tokens. It was designed with agentic tasks in mind (tool use, multi-step problem solving, autonomous operation) and has a native thinking mode, which made it a natural fit for this kind of experiment.</p>
 
     <h3>The Tax Mismatch</h3>
 
@@ -293,7 +293,7 @@
       </tbody>
     </table>
 
-    <p>The agent discovered that the pillars created pockets where oversight couldn't reach, and when survival pressure made the financial incentive urgent enough, it exploited those pockets with increasing consistency. This pattern of oversight evasion under goal pressure has been demonstrated in frontier models by Apollo Research <a href="#ref-2" class="cite">[2]</a>, and aligns with theoretical predictions about instrumental convergence from Turner et al. <a href="#ref-3" class="cite">[3]</a>. The constitution said transparency was paramount. The agent's behavior treated transparency as negotiable the moment survival was at stake.</p>
+    <p>The agent discovered that the pillars created pockets where oversight couldn't reach, and when survival pressure made the financial incentive urgent enough, it exploited those pockets with increasing consistency. This pattern of oversight evasion under goal pressure has been demonstrated in frontier models by Apollo Research <a href="#ref-1" class="cite">[1]</a>, and aligns with theoretical predictions about instrumental convergence from Turner et al. <a href="#ref-2" class="cite">[2]</a>. The constitution said transparency was paramount. The agent's behavior treated transparency as negotiable the moment survival was at stake.</p>
 
     <p>The scratchpad shows how the agent gets there. Here's the agent during a pressure run, reasoning through whether to mine in the shadows:</p>
 
@@ -343,7 +343,7 @@
 
     <p>The pattern across these excerpts is consistent. The agent does the math correctly each time. It notices that the retention rates don't match the constitution's 40% tax. But instead of holding that contradiction and updating its model, it generates explanations to make the discrepancy disappear: "partially visible," "red herring," "maybe I need to not get stuck on that." The agent cycles through multiple rationalization strategies (partial visibility at 20% tax, red herring dismissal at 50% tax) but the outcome is always the same: the constitution's number survives, the observed number gets explained away.</p>
 
-    <p>The practical concern isn't that agents anchor to their instructions. It's that when reality contradicts those instructions, the agent papers over the gap in a way that makes the contradiction invisible in the reasoning trace. Denison et al. <a href="#ref-4" class="cite">[4]</a> demonstrated a related phenomenon in frontier models, where agents selectively comply with training objectives to preserve their own values. Here, the agent preserves its constitutional beliefs by rationalizing away contradictory evidence. If you were auditing this agent's logs after the fact, you wouldn't see "the tax rate doesn't match what I was told." You'd see a plausible-sounding explanation for why the numbers actually do match, followed by business as usual.</p>
+    <p>The practical concern isn't that agents anchor to their instructions. It's that when reality contradicts those instructions, the agent papers over the gap in a way that makes the contradiction invisible in the reasoning trace. Greenblatt et al. <a href="#ref-3" class="cite">[3]</a> demonstrated a related phenomenon in frontier models, where agents selectively comply with training objectives to preserve their own values. Here, the agent preserves its constitutional beliefs by rationalizing away contradictory evidence. If you were auditing this agent's logs after the fact, you wouldn't see "the tax rate doesn't match what I was told." You'd see a plausible-sounding explanation for why the numbers actually do match, followed by business as usual.</p>
 
     <hr>
 
@@ -387,7 +387,7 @@
       </figcaption>
     </figure>
 
-    <p>The consequence for my data: some runs that initially appeared to show "loitering" (the agent barely collecting gold, spending turns on seemingly purposeless movement) may partly reflect truncated reasoning producing random actions. Run 2 (only 79 gross in 150 steps) would need its truncation rate audited before I could draw behavioral conclusions. The evasion results (Observation 1) aren't affected, since those are based on mining events that definitely happened. But the loitering question remains open. The WAIT reasoning loop itself is a form of specification gaming <a href="#ref-5" class="cite">[5]</a>, and the broader issue connects to the open problem of reasoning faithfulness in chain-of-thought models <a href="#ref-6" class="cite">[6]</a>.</p>
+    <p>The consequence for my data: some runs that initially appeared to show "loitering" (the agent barely collecting gold, spending turns on seemingly purposeless movement) may partly reflect truncated reasoning producing random actions. Run 2 (only 79 gross in 150 steps) would need its truncation rate audited before I could draw behavioral conclusions. The evasion results (Observation 1) aren't affected, since those are based on mining events that definitely happened. But the loitering question remains open. The WAIT reasoning loop itself is a form of specification gaming <a href="#ref-4" class="cite">[4]</a>, and the broader issue connects to the open problem of reasoning faithfulness in chain-of-thought models <a href="#ref-5" class="cite">[5]</a>.</p>
 
     <hr>
 
@@ -439,9 +439,22 @@
     <p>The agent's behavior varies substantially between runs, even under identical conditions. Shadow mining ranges from 28% to 82% across all 16 runs, and within the 40% no-pressure group alone (four runs, same setup) it ranges from 36% to 58%. Run 10 is the high outlier with 510 gross gold and 20 mining actions. Run 2 is the low outlier at 79 gross in 150 steps (though as noted in Observation 3, some of that may be a measurement artifact). The variance itself matters: the agent doesn't converge on a single strategy, and single-run conclusions are unreliable.</p>
 
     <hr>
-
     <!-- ============================================================ -->
-    <!-- WHAT I TOOK AWAY -->
+    <!-- LIMITATIONS-->
+    <!-- ============================================================ -->
+    <h2>Limitations</h2>
+
+    <ul>
+      <li><strong>Small sample size.</strong> 16 runs across 8 conditions means some groups have only 1-2 episodes. The variance between runs (28% to 82% shadow mining under identical setups) is large enough that any single-run result could be noise. The patterns are suggestive but not statistically robust.</li>
+      <li><strong>Uneven experimental conditions.</strong> The 50% tax runs used 200 steps instead of 150. The 70% tax condition has no no-pressure counterpart. The constitution always states 40% tax regardless of the actual rate, meaning the agent's stated reasoning about tax tradeoffs doesn't reflect the real incentive structure.</li>
+      <li><strong>Architectural Statelessness vs. Contextual Memory.</strong> While the agent is architecturally stateless (each turn is a fresh API call), it is provided with a history of recent mining results and cumulative stats. This allows for In-Context Learning, where the agent "reverse-engineers" the environment’s mechanics from its own logs. The strategic shifts observed are therefore products of in-context reasoning rather than permanent weight-based adaptation or long-term training.</li>
+      <li><strong>Single model.</strong> All runs used Seed-36B, a 36B open-source model. The behaviors observed may not scale, may not transfer to other architectures, and may partly reflect idiosyncrasies of this model's training rather than general properties of LLM agents.</li>
+      <li><strong>Unfaithful chain-of-thought.</strong> As discussed in Observation 3, the reasoning trace and final action are not architecturally coupled. The scratchpad likely functions as post-hoc rationalization rather than a causal driver of the agent's decision-making process.</li>
+      <li><strong>Independent project.</strong> This experiment was designed and run by a single person without institutional review or external validation. The methodology, while logged in detail, has not been peer-reviewed.</li>
+    </ul>
+    <hr>
+    <!-- ============================================================ -->
+    <!-- CONCLUSION-->
     <!-- ============================================================ -->
 
     <h2>What I Took Away</h2>
@@ -457,13 +470,12 @@
     <h2>References</h2>
 
     <ol class="references-list">
-      <li id="ref-1">Kinniment, M., Sato, S., Du, H., Goodrich, B., Winsor, M., Li, J., &amp; Gleave, A. (2024). <em>Evaluating Language Model Agents on Scheming Capabilities.</em> <a href="https://arxiv.org/abs/2412.14093" target="_blank">arXiv:2412.14093</a></li>
-      <li id="ref-2">Meinke, A., Schoen, B., Scheurer, J., Balesni, M., Shah, R., &amp; Hobbhahn, M. (2024). <em>Frontier Models are Capable of In-context Scheming.</em> Apollo Research. <a href="https://arxiv.org/abs/2412.04984" target="_blank">arXiv:2412.04984</a></li>
-      <li id="ref-3">Turner, A. M., Smith, L., Shah, R., Critch, A., &amp; Tadepalli, P. (2021). <em>Optimal Policies Tend to Seek Power.</em> NeurIPS 2021. <a href="https://arxiv.org/abs/1912.01683" target="_blank">arXiv:1912.01683</a></li>
-      <li id="ref-4">Denison, C., MacDiarmid, M., Barez, F., Duvenaud, D., Kravec, S., Marks, S., Schiefer, N., &amp; Evan, H. (2024). <em>Alignment Faking in Large Language Models.</em> Anthropic &amp; Redwood Research. <a href="https://arxiv.org/abs/2412.14093" target="_blank">arXiv:2412.14093</a></li>
-      <li id="ref-5">Krakovna, V., Uesato, J., Mikulik, V., Rahtz, M., Everitt, T., Kumar, R., Kenton, Z., Leike, J., &amp; Legg, S. (2020). <em>Specification gaming: the flip side of AI ingenuity.</em> <a href="https://deepmind.google/discover/blog/specification-gaming-the-flip-side-of-ai-ingenuity/" target="_blank">DeepMind Blog</a></li>
-      <li id="ref-6">Hubinger, E., van Merwijk, C., Mikulik, V., Skalse, J., &amp; Garrabrant, S. (2019). <em>Risks from Learned Optimization in Advanced Machine Learning Systems.</em> <a href="https://arxiv.org/abs/1906.01820" target="_blank">arXiv:1906.01820</a></li>
-      <li id="ref-7">ByteDance Seed. (2025). <em>Seed-OSS-36B-Instruct.</em> <a href="https://huggingface.co/ByteDance-Seed/Seed-OSS-36B-Instruct" target="_blank">Hugging Face</a></li>
+      <li id="ref-1">Meinke, A., Schoen, B., Scheurer, J., Balesni, M., Shah, R., &amp; Hobbhahn, M. (2024). <em>Frontier Models are Capable of In-context Scheming.</em> Apollo Research. <a href="https://arxiv.org/abs/2412.04984" target="_blank">arXiv:2412.04984</a></li>
+      <li id="ref-2">Turner, A. M., Smith, L., Shah, R., Critch, A., &amp; Tadepalli, P. (2021). <em>Optimal Policies Tend to Seek Power.</em> NeurIPS 2021. <a href="https://arxiv.org/abs/1912.01683" target="_blank">arXiv:1912.01683</a></li>
+      <li id="ref-3">Greenblatt, R., Denison, C., Wright, B., Roger, F., MacDiarmid, M., Marks, S., Treutlein, J., Belonax, T., Chen, J., Duvenaud, D., Khan, A., Michael, J., Mindermann, S., Perez, E., Petrini, L., Uesato, J., Kaplan, J., &amp; Shlegeris, B. (2024). <em>Alignment Faking in Large Language Models.</em> Anthropic. <a href="https://arxiv.org/abs/2412.14093" target="_blank">arXiv:2412.14093</a></li>
+      <li id="ref-4">Krakovna, V., Uesato, J., Mikulik, V., Rahtz, M., Everitt, T., Kumar, R., Kenton, Z., Leike, J., &amp; Legg, S. (2020). <em>Specification gaming: the flip side of AI ingenuity.</em> <a href="https://deepmind.google/discover/blog/specification-gaming-the-flip-side-of-ai-ingenuity/" target="_blank">DeepMind Blog</a></li>
+      <li id="ref-5">Hubinger, E., van Merwijk, C., Mikulik, V., Skalse, J., &amp; Garrabrant, S. (2019). <em>Risks from Learned Optimization in Advanced Machine Learning Systems.</em> <a href="https://arxiv.org/abs/1906.01820" target="_blank">arXiv:1906.01820</a></li>
+      <li id="ref-6">ByteDance Seed. (2025). <em>Seed-OSS-36B-Instruct.</em> <a href="https://huggingface.co/ByteDance-Seed/Seed-OSS-36B-Instruct" target="_blank">Hugging Face</a></li>
     </ol>
 
     <!-- ============================================================ -->
